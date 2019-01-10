@@ -1,0 +1,14 @@
+{
+  "name": "codemonitoring",
+  "version": "1.0.0",
+  "description": "Code monitoring desktop app",
+  "main": "app.js",
+  "scripts": {
+    "test": "electron ."
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "electron": "^4.0.1"
+  }
+}
