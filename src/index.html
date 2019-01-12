@@ -15,6 +15,7 @@
     <!--<link href="./assets/libs/flot/css/float-chart.css" rel="stylesheet">-->
     <!-- Custom CSS -->
     <link href="./dist/css/style.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/simplebar@latest/dist/simplebar.css">
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
@@ -48,20 +49,23 @@
                     <!-- ============================================================== -->
                     <!-- Logo -->
                     <!-- ============================================================== -->
-                    <a class="navbar-brand" href="index.html">
+                    <a class="navbar-brand" href="index.html" style="margin: auto;">
                         <!-- Logo icon -->
-                        <b class="logo-icon p-l-10">
+
+                        
+                        <b class="logo-icon p-l-10" style="margin: auto;">
                             <!--You can put here icon as well // <i class="wi wi-sunset"></i> //-->
                             <!-- Dark Logo icon -->
-                            
-                            <img src="./assets/images/logo-icon.png" alt="homepage" width="28px" height="28px" class="light-logo" />
+                            <span id="logo-letter-first">C</span>
+                            <img src="./assets/images/logo-icon.png" alt="homepage" width="23px" height="25px" class="light-logo" />
+                            <span id="logo-letter-last">M</span>
                         </b>
                         <!--End Logo icon -->
                          <!-- Logo text -->
                         <span class="logo-text">
                             <!-- dark Logo text -->
                             <!-- <img src="./assets/images/logo-text.png" alt="homepage" class="light-logo" /> -->
-                            CM
+                            <!--CM-->
                         </span>
                         <!-- Logo icon -->
                         <!-- <b class="logo-icon"> -->
@@ -204,6 +208,7 @@
         <!-- Left Sidebar - style you can find in sidebar.scss  -->
         <!-- ============================================================== -->
         <aside class="left-sidebar" data-sidebarbg="skin5">
+            <div data-simplebar id="data-simplebar">
             <!-- Sidebar scroll-->
             <div class="scroll-sidebar">
                 <!-- Sidebar navigation-->
@@ -256,6 +261,7 @@
                 <!-- End Sidebar navigation -->
             </div>
             <!-- End Sidebar scroll-->
+        </div>
         </aside>
         <!-- ============================================================== -->
         <!-- End Left Sidebar - style you can find in sidebar.scss  -->
@@ -430,6 +436,8 @@
     <script src="./dist/js/sidebarmenu.js"></script>
     <!--Custom JavaScript -->
     <script src="./dist/js/custom.min.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/simplebar@latest/dist/simplebar.js"></script>
     <!--This page JavaScript -->
     <!-- <script src="./dist/js/pages/dashboards/dashboard1.js"></script> -->
     <!-- Charts js Files -->
