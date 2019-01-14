@@ -2,7 +2,9 @@ const {app, BrowserWindow} = require('electron');
 const path = require('path');
 const url = require('url');
 var IMAGE_DIR = '/images/';
-let win;
+var WEB_URL = 'http://127.0.0.1';
+var WEB_PORT = '';
+let win = null;
 
 const $ = require('jquery');
 const {remote} = require('electron');
@@ -13,7 +15,7 @@ function createWindow(){
         height: 700,
         minWidth: 1200,
         minHeight: 700,
-        icon: path.join(__dirname, IMAGE_DIR, 'logo.ico'),
+        icon: path.join(__dirname, IMAGE_DIR, 'favicon.png'),
         frame: true,
         webPreferences: {
             nodeIntegration: false
@@ -23,15 +25,13 @@ function createWindow(){
     win.webContents.openDevTools();
     win.setMenu(null);
 
-    win.loadURL(url.format({
-        pathname: path.join(__dirname, 'index.html'),
-        protocol: 'file:',
-        slashes: true
-    }));
-    
+    win.loadURL(WEB_URL + WEB_PORT)
+
     win.on('close', () => {
         win = null;
     });
+
+    //win.setOverlayIcon(path.join(__dirname, IMAGE_DIR, 'favicon.png'), 'Description for overlay')
 }
 
 app.on('ready', createWindow);
