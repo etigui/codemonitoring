@@ -1,0 +1,24 @@
+{
+  "name": "web",
+  "version": "1.0.0",
+  "description": "Code monitoring web app",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "compression": "^1.7.3",
+    "cookie-parser": "^1.4.3",
+    "ejs": "^2.6.1",
+    "express": "^4.16.4",
+    "express-mysql-session": "^2.1.0",
+    "express-session": "^1.15.6",
+    "express-validator": "^5.3.1",
+    "helmet": "^3.15.0",
+    "mysql": "^2.16.0",
+    "path": "^0.12.7",
+    "ws": "^6.1.2",
+    "x-xss-protection": "^1.1.0"
+  }
+}

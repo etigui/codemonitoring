@@ -1,0 +1,11 @@
+{
+    "host": "localhost",
+    "port": 8080,
+    "env": "dev",
+    "dbHost": "localhost",
+    "dbUsername":"node",
+    "dbPassword": "tqniPX85xbdzh8W2",
+    "dbPort": 3306,
+    "dbName": "node",
+    "sessionSecret": "AfeYZN5LnYySiYkBvGMtPY0OEydOunPG"
+}

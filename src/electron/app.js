@@ -6,9 +6,6 @@ var WEB_URL = 'http://127.0.0.1';
 var WEB_PORT = '';
 let win = null;
 
-const $ = require('jquery');
-const {remote} = require('electron');
-
 function createWindow(){
     win = new BrowserWindow({
         width: 1200,
@@ -22,15 +19,21 @@ function createWindow(){
         }
     });
 
-    win.webContents.openDevTools();
+    // Enable dev tools
+    //win.webContents.openDevTools();
+
+    // Remove menu
     win.setMenu(null);
-
     win.loadURL(WEB_URL + WEB_PORT)
-
     win.on('close', () => {
         win = null;
     });
 
+    // Clear cache
+    const session = win.webContents.session;
+    session.clearCache(() => {});
+
+    // Set overlay on existing icon
     //win.setOverlayIcon(path.join(__dirname, IMAGE_DIR, 'favicon.png'), 'Description for overlay')
 }
 
@@ -47,7 +50,6 @@ app.on('activate', () => {
         createWindow();
     }
 });
-
 
 // Enable live reload for Electron too
 require('electron-reload')(__dirname, {
