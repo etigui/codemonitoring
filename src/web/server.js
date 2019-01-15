@@ -3,14 +3,22 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var compression = require('compression');
-var session = require('express-session');
-var mysqlSessionStore = require('express-mysql-session')(session);
+var expressSession = require('express-session');
+var mysqlSessionStore = require('express-mysql-session')(expressSession);
 var expressValidator = require('express-validator');
 var debug = require('debug')('web:server');
+var morgan = require('morgan');
 
-// External security module dependencies
+// External security and auth module dependencies
 var helmet = require('helmet');
 var xssProtection = require('x-xss-protection');
+var passport = require('passport');
+
+// Install bcrypt win
+// npm install -g node-gyp
+// npm install --g --production windows-build-tools
+// npm install bcrypt --save
+var bcrypt = require('bcrypt');
 
 // Internal module dependencies
 var config = require('./configs/conf');
@@ -20,15 +28,20 @@ var db = require('./db');
 // Modules instances
 var app = express();
 
-// Add first
+// Middleware stack
 app.use(expressValidator());
+app.use(cookieParser());
+app.use(compression());
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+app.use(express.static(path.join(__dirname, 'public')));
+app.use(morgan('dev'));
 
-// Strage logger
-var myLogger = function (req, res, next) {
-    console.log(req.method);
-    next();
-}
-app.use(myLogger)
+// Helmet secure express apps by setting various HTTP headers
+//app.use(helmet());
+
+// X-XSS-Protection HTTP header is a basic protection against XSS
+//app.use(xssProtection({ setOnOldIE: true }));
 
 // Vars
 var env = !isEmpty(config.env) ? config.env : null;
@@ -54,41 +67,32 @@ if([env, port, dbHost, dbUsername, dbPassword, dbPort, dbName, sessionSecret].in
 // App config
 app.disable('x-powered-by');
 
-// Helmet secure express apps by setting various HTTP headers
-app.use(helmet());
-
-// X-XSS-Protection HTTP header is a basic protection against XSS
-app.use(xssProtection({ setOnOldIE: true }));
-
 // View engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
 // Create MySQL session store
 var dbSessionStore = new mysqlSessionStore({
-    /*host: dbHost,
+    host: dbHost,
     port: dbPort,
     user: dbUsername,
     password: dbPassword,
-    database: dbSessionDB*/
-}, db);
+    database: dbName
+});
 
 // Create session
-app.use(session({
+app.use(expressSession({
     key: 'socialify.sess',
     secret: sessionSecret,
     store: dbSessionStore,
     resave: false,
     saveUninitialized: false,
-    cookie: {maxAge: 1000 * 60 * 60 * 24}
+    //cookie: {path: '/', secure: false, httpOnly: true, expires: new Date(Date.now() + 86400000)}
 }));
 
-// Middleware stack
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
-app.use(cookieParser());
-app.use(compression());
-app.use(express.static(path.join(__dirname, 'public')));
+// Init and use session with passport
+app.use(passport.initialize());
+app.use(passport.session());
 
 // Server listen
 var server = app.listen(port, function () {
@@ -113,21 +117,25 @@ app.use(function(req, res, next) {
     var err = new Error('Not Found');
     err.status = 404;
     next(err);
-  });
+});
 
 // Production and development error handler
 // Set locals, only providing error in development
+//ENOENT ECONNREFUSED
 app.use(function(err, req, res, next) {
-    /*res.locals.message = err.message;
+
+
+    res.locals.message = err.message;
     res.status(err.status || 500);
-    if(env){
-        res.locals.message = {};
-        res.render({message: err.message, error: err});
-    }else{
+    if(env === 'dev'){
         res.locals.error = err;
-        res.render({message: err.message, error: {}});
-    } */
-    res.sendStatus(err.httpStatusCode).json(err);
+        //res.render({message: err.message, error: err});
+        res.render('pages/error');
+    }else{
+        res.locals.error = {};
+        //res.render({message: err.message, error: {}});
+        res.render('pages/error');
+    }
 });
 
 // Export Module
