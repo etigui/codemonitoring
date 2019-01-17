@@ -13,7 +13,6 @@ function isEmpty(value) {
     return typeof value == 'string' && !value.trim() || typeof value == 'undefined' || value === null;
 }
 
-
 // Create MySQL connection
 var dbConnection = mysql.createConnection({
     port: dbPort,
@@ -23,7 +22,7 @@ var dbConnection = mysql.createConnection({
     database: dbName
 });
 
-// Handling function error, end
+// Handling function connect
 dbConnection.connect(function(err) {
     if (err) {
       console.error('Error connecting to DB: ' + err.stack);
@@ -32,16 +31,9 @@ dbConnection.connect(function(err) {
     console.log('Successfully connected to DB');
 });
 
-dbConnection.query('SELECT 1 + 1 AS solution', function (error, results, fields) {
-    if (error) throw error;
-    console.log('The solution is: ', results[0].solution);
-});
-
+// Handling error function
 dbConnection.on('error', function(err) {
     console.error('Error connecting to DB: ' + err.code);
-});
-dbConnection.end(function(err) {
-    console.log('DB connection terminated');
 });
 
 // Close DB connection when colse app (ctrl+c)
